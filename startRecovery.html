@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Your Recovery | Daya Physio Care</title>
+
+<style>
+/* RESET & BASE */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+  overflow: hidden; /* Prevents scrollbars during step sliding */
+}
+
+/* WATERMARK - Positioned behind everything */
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px; /* Adjust size as needed */
+  height: 550px;
+  background: url('images/logo.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.1; /* Subtle transparency */
+  z-index: -1; /* Keeps it behind the card */
+  pointer-events: none;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background: #0062ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.back-home {
+  color: white;
+  text-decoration: none;
+  background: #000000;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.brand {
+  color: white;
+  font-weight: bold;
+}
+
+/* WRAPPER */
+.wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+}
+
+/* CARD */
+.card {
+  width: 90%;
+  max-width: 420px;
+  height: 460px;
+  background: rgba(255, 255, 255, 0); /* Slightly transparent white */
+  padding: 30px;
+  border-radius: 16px;
+  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0); */
+  position: relative;
+  overflow: hidden;
+
+}
+
+/* STEP CONTAINER */
+.steps-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* STEPS */
+.step {
+  position: absolute;
+  width: 100%;
+  top: 40px; 
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(50px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.step.exit-left {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50px);
+}
+
+/* BACK BUTTON */
+.step-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  color: #000000;
+  display: none;
+  transition: color 0.2s;
+}
+
+.step-back:hover { color: #111; }
+
+/* INPUTS & TEXT */
+h2 { margin: 0 0 10px 0; font-size: 1.5rem; color: #111; }
+p { color: #666; font-size: 14px; margin-bottom: 20px; }
+
+.input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* BUTTONS */
+.btn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 14px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.btn:hover { background: #333; }
+
+/* OPTION BOXES */
+.option {
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  font-weight: 500;
+}
+
+.option:hover {
+  background: #f8fafc;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+</style>
+</head>
+<body>
+
+<!-- FIXED WATERMARK -->
+<div class="watermark"></div>
+
+<div class="navbar">
+  <a href="index.html" class="back-home">← Home</a>
+  <h1 style="color: white;">Start Your Recovery</h1>
+  <div class="brand">Daya Physio Care</div>
+</div>
+
+<div class="wrapper">
+  <div class="card">
+    <!-- Back arrow -->
+    <div class="step-back" id="backBtn" onclick="prev()">←</div>
+
+    <form id="recoveryForm" action="https://api.web3forms.com/submit" method="POST">
+      <!-- Web3Forms Access Key -->
+      <input type="hidden" name="access_key" value="8065706b-7c08-442d-a599-7f2ac5c3f4c0">
+      
+      <!-- Hidden Inputs to capture Pain Area and Condition -->
+      <input type="hidden" name="pain_area" id="painInput">
+      <input type="hidden" name="condition" id="conditionInput">
+
+      <div class="steps-container">
+
+        <!-- STEP 1: Name -->
+        <div class="step active">
+          <h2>Your Name</h2>
+          <p>Let's start with your full name.</p>
+          <input type="text" name="name" id="userName" class="input" placeholder="e.g. John Doe" required>
+          <button type="button" class="btn" onclick="validateStep('userName')">Next Step</button>
+        </div>
+
+        <!-- STEP 2: Phone -->
+        <div class="step">
+          <h2>Phone Number</h2>
+          <p>Where can we reach you to schedule?</p>
+          <input type="tel" name="phone" id="userPhone" class="input" placeholder="e.g. +91 98765 43210" required>
+          <button type="button" class="btn" onclick="validateStep('userPhone')">Next Step</button>
+        </div>
+
+        <!-- STEP 3: Pain Area -->
+        <div class="step">
+          <h2>What hurts?</h2>
+          <p>Select the primary area of concern.</p>
+          <div class="option" onclick="selectPain(this,'Back')">Back Pain</div>
+          <div class="option" onclick="selectPain(this,'Knee')">Knee Pain</div>
+          <div class="option" onclick="selectPain(this,'Shoulder')">Shoulder Pain</div>
+          <div class="option" onclick="selectPain(this,'Neuro')">Neurological / Stroke</div>
+        </div>
+
+        <!-- STEP 4: Condition -->
+        <div class="step">
+          <h2>Specific Condition</h2>
+          <p>Select what best describes your issue.</p>
+          <div id="conditionsList"></div>
+        </div>
+
+        <!-- STEP 5: Additional Info & Submit -->
+        <div class="step">
+          <h2>Last Details</h2>
+          <p>Any details our physio should know?</p>
+          <textarea name="message" class="input" rows="4" placeholder="How long have you had this? Any previous surgery?"></textarea>
+          <button type="submit" class="btn">Book My Consultation</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll(".step");
+const backBtn = document.getElementById("backBtn");
+
+// Handles the transition animations
+function updateStepVisibility() {
+  steps.forEach((s, index) => {
+    s.classList.remove("active", "exit-left");
+    if (index === currentStep) {
+      s.classList.add("active");
+    } else if (index < currentStep) {
+      s.classList.add("exit-left");
+    }
+  });
+
+  // Show/Hide back arrow
+  backBtn.style.display = (currentStep === 0) ? "none" : "block";
+}
+
+function next() {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    updateStepVisibility();
+  }
+}
+
+function prev() {
+  if (currentStep > 0) {
+    currentStep--;
+    updateStepVisibility();
+  }
+}
+
+// Ensure user doesn't leave fields blank
+function validateStep(inputId) {
+  const input = document.getElementById(inputId);
+  if (input.value.trim() === "") {
+    input.style.borderColor = "#ef4444";
+    input.focus();
+    return;
+  }
+  input.style.borderColor = "#ddd";
+  next();
+}
+
+/* DATA LOGIC FOR PHYSIO CONDITIONS */
+const conditionData = {
+  Back: ["Slip Disc / Sciatica", "Chronic Lower Back Pain", "Neck / Cervical Pain", "Scoliosis"],
+  Knee: ["ACL / Ligament Injury", "Osteoarthritis", "Post-Surgery Rehab", "Knee Replacement"],
+  Shoulder: ["Frozen Shoulder", "Rotator Cuff Tear", "Shoulder Dislocation"],
+  Neuro: ["Stroke Rehabilitation", "Paralysis Recovery", "Parkinson's Disease", "Balance Issues"]
+};
+
+function selectPain(el, pain) {
+  document.getElementById("painInput").value = pain;
+  
+  // Clear and Rebuild the specific conditions list
+  const container = document.getElementById("conditionsList");
+  container.innerHTML = "";
+
+  conditionData[pain].forEach(cond => {
+    let div = document.createElement("div");
+    div.className = "option";
+    div.innerText = cond;
+    div.onclick = () => selectCondition(cond);
+    container.appendChild(div);
+  });
+
+  next();
+}
+
+function selectCondition(cond) {
+  document.getElementById("conditionInput").value = cond;
+  next();
+}
+</script>
+
+</body>
+</html>
